@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 //Misty API Calls
-function API1(){
+function getFaces(){
   console.log("API1")
-  axios.get("https://andy-ajax-blog.herokuapp.com/blogpost")
+  axios.get(`http://${mistyIP}/api/beta/faces`)
     .then(res => {
       console.log(res)
     })
@@ -15,3 +15,4 @@ function API1(){
       console.log(err)
     })
 }
+
