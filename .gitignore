@@ -1,2 +1,6 @@
 .DS_Store
 /rasppi/node_modules
+/backend_playground/node_modules
+/backend_playground/.env
+/backend_playground/yarn.lock
+/backend_playground/package-lock.json
