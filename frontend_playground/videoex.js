@@ -2,11 +2,11 @@
 
 // Declare a constant variable and set its 
 // value to a string with your robot's IP address.
-const ip = "<robotipaddress>"
+const ip = "10.9.22.79";
 
 // Create a global constant called you 
 // and assign it to a string with your name. 
-const you = "<your-name>"
+const you = "andy"
 // Initialize another variable called 
 // onList and set its value to false.
 let onList = false;

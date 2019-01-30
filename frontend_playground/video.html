@@ -11,16 +11,20 @@
 </head>
 
 <body>
+  <input id="Run API 1" type="button" value="Get Faces" onclick="getFaces();" />
+
+
+  
   <script>
     /* GLOBALS */
 
     // Declare a constant variable and set its 
     // value to a string with your robot's IP address.
-    const ip = "<robotipaddress>"
+    const ip = "10.9.22.79"
 
     // Create a global constant called you 
     // and assign it to a string with your name. 
-    const you = "<your-name>"
+    const you = "andy"
     // Initialize another variable called 
     // onList and set its value to false.
     let onList = false;
@@ -38,55 +42,21 @@
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    /* CALLBACKS */
-
-    // Define the function passed as the callback 
-    // to the new instance of LightSocket. This is 
-    // the code that executes when socket opens a 
-    // connection to your robot.
     async function openCallback() {
-
-      // Unsubscribe from any existing ComputerVision 
-      // WebSocket connections.
       socket.Unsubscribe("ComputerVision");
-
-      // Use sleep() to pause execution for 
-      // three seconds to give Misty time 
-      // to register and execute the command.
       await sleep(3000);
 
-      // Issue a GET request to the endpoint 
-      // for the GetLearnedFaces command. 
-      // Use then() to pass the response 
-      // to a callback function.
       axios.get("http://" + ip + "/api/beta/faces").then(function (res) {
-        // Store the list of known faces in the
-        // faceArr variable and print this list.
-        let faceArr = res.data[0].result;
-        console.log("Learned faces:", faceArr);
-
-        // Loop through each item in faceArr. 
-        // Compare each item to the value stored 
-        // in the you variable.
-        for (let i = 0; i < faceArr.length; i++) {
-          // If a match is found, update 
-          // the value of onList to true.
-          if (faceArr[i] === you) {
-            onList = true;
-          }
-        }
-
-        // Subscribe to the ComputerVision WebSocket. 
-        // Pass ComputerVision for the eventName and 
-        // msgType parameters. Set debounceMs to 200 
-        // and pass a callback function named _ComputerVision 
-        // for the callback parameter. Pass null for 
-        // all other arguments.
+        // let faceArr = res.data[0].result;
+        // console.log("Learned faces:", faceArr);
+        // for (let i = 0; i < faceArr.length; i++) {
+        //   // If a match is found, update 
+        //   // the value of onList to true.
+        //   if (faceArr[i] === you) {
+        //     onList = true;
+        //   }
+        // }
         socket.Subscribe("ComputerVision", "ComputerVision", 200, null, null, null, null, _ComputerVision);
-
-        // Use an if, else statement to execute 
-        // startFaceRecognition() if onList is true 
-        // and to execute startFaceTraining if otherwise.
         if (onList) {
           console.log("You were found on the list!");
           startFaceRecognition();
@@ -163,16 +133,21 @@
       axios.post("http://" + ip + "/api/beta/faces/recognition/start");
     };
 
-    // Open the connection to your robot. 
-    // When the connection is established, 
-    // the openCallback function executes 
-    // to check whether the value stored in 
-    // you is on Misty's list of known faces. 
-    // Then, the program subscribes to the 
-    // ComputerVision WebSocket, and Misty 
-    // either greets you by name or starts 
-    // facial training to learn your face so 
-    // she can greet you in the future.
+    function getFaces(){
+      axios.get("http://" + ip + "/api/beta/faces").then(function (res) {
+        console.log(res.data)
+        let faceArr = res.data[0].result;
+        console.log("Learned faces:", faceArr);
+        // for (let i = 0; i < faceArr.length; i++) {
+        //   // If a match is found, update 
+        //   // the value of onList to true.
+        //   if (faceArr[i] === you) {
+        //     onList = true;
+        //   }
+        // }
+      })
+    }
+
     socket.Connect();
 
   </script>
